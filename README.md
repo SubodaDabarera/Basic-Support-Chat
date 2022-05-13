@@ -2,6 +2,14 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+
+######################################################
+```diff
+- User or client side open in normal browser window
+- Agent side open in private window of the same browser
+
+
+
 ## Available Scripts
 
 In the project directory, you can run:
