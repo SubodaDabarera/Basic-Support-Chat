@@ -21,14 +21,11 @@ const Client = () => {
       let uid = localStorage.getItem("cc-uid");
       if (uid === null || uid == "") {
         // create new user
-        // const uid = "user" + new Date().getSeconds().toString();
-        const uid = localStorage.getItem("cc-uid")
+        const uid = "user" + new Date().getSeconds().toString();
         const user = new window.CometChatWidget.CometChat.User(uid);
         user.setName(uid);
         window.CometChatWidget.createOrUpdateUser(user).then((user) => {
           // Proceed with user login
-
-          console.log("user is = ", user)
 
           window.CometChatWidget.login({
             uid: uid,
@@ -41,12 +38,13 @@ const Client = () => {
               docked: "true",
               height: "500px",
               width: "400px",
-              // defaultID: process.env.REACT_APP_AGENT_ID,
               defaultID: localStorage.getItem("agent-uid"),
               defaultType: "user", //user or group
             });
             setLoad(false);
             console.log(loggedInUser)
+          }).catch(err => {
+            console.log("error occured when login : " + err)
           });
         });
       } else {
@@ -59,12 +57,44 @@ const Client = () => {
             docked: "true",
             height: "500px",
             width: "400px",
-            defaultID: process.env.REACT_APP_AGENT_ID,
+            defaultID: localStorage.getItem("agent-uid"),
             defaultType: "user", //user or group
           });
           setLoad(false);
           console.log(user)
-        });
+        }, 
+        (error) => {
+        
+          console.log("error in register: " + error )
+          const uid = localStorage.getItem("cc-uid")
+          const user = new window.CometChatWidget.CometChat.User(uid);
+          user.setName(uid);
+          window.CometChatWidget.createOrUpdateUser(user).then((user) => {
+            window.CometChatWidget.login({
+              uid: uid,
+            }).then((loggedInUser) => {
+              localStorage.setItem("cc-uid", loggedInUser.uid);
+              // Proceed with launching your Chat Widget
+              window.CometChatWidget.launch({
+                widgetID: wid,
+                roundedCorners: "true",
+                docked: "true",
+                height: "500px",
+                width: "400px",
+                defaultID: localStorage.getItem("agent-uid"),
+                defaultType: "user", //user or group
+              });
+              setLoad(false);
+              console.log(loggedInUser)
+            }).catch(err => {
+              console.log("error occured when login : " + err)
+            });
+          });
+        
+        
+        }
+        )
+        
       }
     });
   }, []);

@@ -7,7 +7,7 @@ const AUTH_KEY = process.env.REACT_APP_AUTH_KEY;
 const wid = process.env.REACT_APP_W2;
 
 const MultipleAgents = () => {
-    console.log("user : " + localStorage.getItem("cc-uid"))
+  console.log("user : " + localStorage.getItem("cc-uid"))
   console.log("agent : " + localStorage.getItem("agent-uid"))
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -22,8 +22,7 @@ const MultipleAgents = () => {
         let agent_uid = localStorage.getItem("agent-uid");
         if (agent_uid === null || agent_uid == "") {
             // create new user
-            // const uid = "agent" + new Date().getSeconds().toString();
-            const uid = localStorage.getItem("agent-uid")
+            const uid = "agent" + new Date().getSeconds().toString();
             const user = new window.CometChatWidget.CometChat.User(uid);
             user.setName(uid);
             window.CometChatWidget.createOrUpdateUser(user).then((user) => {
@@ -70,6 +69,29 @@ const MultipleAgents = () => {
             (error) => {
                 console.log("User login failed with error:", error);
                 //Check the reason for error and take appropriate action.
+
+                const uid = localStorage.getItem("agent-uid")
+                const user = new window.CometChatWidget.CometChat.User(uid);
+                user.setName(uid);
+                window.CometChatWidget.createOrUpdateUser(user).then((user) => {
+                  window.CometChatWidget.login({
+                    uid: uid,
+                  }).then((loggedInUser) => {
+                    localStorage.setItem("agent-uid", loggedInUser.uid);
+                    // Proceed with launching your Chat Widget
+                    window.CometChatWidget.launch({
+                      widgetID: wid,
+                      target: "#cometchat",
+                      roundedCorners: "true",
+                      height: "600px",
+                      width: "100%",
+                      defaultID: "",
+                      defaultType: "user", //user or group
+                    });
+                    setLoading(false);
+                    console.log(loggedInUser)
+                  });
+                });
             }
             );
             console.log(response)
