@@ -6,6 +6,8 @@ const AUTH_KEY = process.env.REACT_APP_AUTH_KEY;
 const wid = process.env.REACT_APP_W1;
 
 const Client = () => {
+  console.log("user : " + localStorage.getItem("cc-uid"))
+  console.log("agent : " + localStorage.getItem("agent-uid"))
   const [load, setLoad] = useState(true);
   useEffect(() => {
     setLoad(true);
@@ -19,7 +21,8 @@ const Client = () => {
       let uid = localStorage.getItem("cc-uid");
       if (uid === null || uid == "") {
         // create new user
-        const uid = "user" + new Date().getSeconds().toString();
+        // const uid = "user" + new Date().getSeconds().toString();
+        const uid = localStorage.getItem("cc-uid")
         const user = new window.CometChatWidget.CometChat.User(uid);
         user.setName(uid);
         window.CometChatWidget.createOrUpdateUser(user).then((user) => {
@@ -38,7 +41,8 @@ const Client = () => {
               docked: "true",
               height: "500px",
               width: "400px",
-              defaultID: process.env.REACT_APP_AGENT_ID,
+              // defaultID: process.env.REACT_APP_AGENT_ID,
+              defaultID: localStorage.getItem("agent-uid"),
               defaultType: "user", //user or group
             });
             setLoad(false);

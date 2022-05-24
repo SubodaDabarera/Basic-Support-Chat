@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Link, Routes } from "react-router-dom";
 import Agent from "./Agent";
 import AgentLogin from "./AgentLogin";
 import Client from "./Client";
+import MultipleAgents from "./MultipleAgents";
 
 const agentsArray = [
   {"aID": "agent"},
@@ -14,26 +15,46 @@ function App() {
 
   const [agentIDtemp, setAgentIDTemp] = useState("")
   const [agentID, setAgentID] = useState("")
+  const [userID, setUserID] = useState("")
+  const [userIDtemp, setUserIDtemp] = useState("")
 
   console.log(agentID)
 
   return (
     <div className="App">
         <>
-        {/* <input placeholder="Enter agent ID... "
+        <input placeholder="Enter agent ID... "
           onChange={(e) => setAgentIDTemp(e.target.value)}
         />
-
         <button onClick={
           () => (setAgentID(agentIDtemp),
-                localStorage.setItem("a_uid", agentIDtemp))
+                localStorage.setItem("agent-uid", agentIDtemp))
           }>
-          Click to enter
-        </button> */}
-        
+          Click to enter agent
+        </button>
+        <br></br>
+
+        <input placeholder="Enter user ID... "
+          onChange={(e) => setUserIDtemp(e.target.value)}
+        />
+        <button onClick={
+          () => (setUserID(userIDtemp),
+                localStorage.setItem("cc-uid", userIDtemp))
+          }>
+          Click to enter user
+        </button>
+
+
+        <br></br>
         <button
+          style={{backgroundColor: "red"}}
           onClick={() => localStorage.setItem("cc-uid", "")}
         >Remove user</button>
+
+        <button style={{backgroundColor: "red"}}
+          onClick={() => localStorage.setItem("agent-uid", "")}
+        >Remove agent</button>
+
 
         <BrowserRouter>
         <ul>
@@ -50,6 +71,7 @@ function App() {
           <Routes>
             <Route path="/client" element = {<Client/>} />
             <Route path="/agent" element = {<Agent/>} />
+            <Route path='/multipleAgents' element = {<MultipleAgents/>} />
           </Routes>
         </BrowserRouter>
         
